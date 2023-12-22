@@ -1,5 +1,5 @@
-﻿using DeveLinePlatformer.MonoGame.Core.HelperObjects;
-using DeveMazeGeneratorMonoGame;
+﻿using DeveLinePlatformer.MonoGame.Core;
+using DeveLinePlatformer.MonoGame.Core.HelperObjects;
 using System;
 
 namespace DeveLinePlatformer.MonoGame.DesktopGL

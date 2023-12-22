@@ -1,6 +1,5 @@
 using DeveLinePlatformer.MonoGame.Core;
 using DeveLinePlatformer.MonoGame.Core.HelperObjects;
-using DeveMazeGeneratorMonoGame;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
 using Microsoft.Xna.Framework;

@@ -1,11 +1,12 @@
 ﻿using DeveLinePlatformer.MonoGame.Core.Data;
 using DeveLinePlatformer.MonoGame.Core.HelperObjects;
+using DeveLinePlatformer.MonoGame.Core.PlatformerGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 
-namespace DeveMazeGeneratorMonoGame
+namespace DeveLinePlatformer.MonoGame.Core
 {
     /// <summary>
     /// This is the main type for your game
@@ -30,6 +31,10 @@ namespace DeveMazeGeneratorMonoGame
 
 
         private readonly string _version = typeof(TheGame).Assembly.GetName().Version.ToString();
+
+        private MapData mapData;
+        private MapEditor mapEditor;
+        private CoolPlatformerGame platformerGame;
 
 
         public TheGame() : this(Platform.Desktop)
@@ -71,11 +76,11 @@ namespace DeveMazeGeneratorMonoGame
             graphics.PreferMultiSampling = false;
             //GraphicsDevice.PresentationParameters.MultiSampleCount = 16;
 
-            IsMouseVisible = false;
+            IsMouseVisible = true;
 
 
             //This is required for Blazor since it loads assets in a custom way
-            Content = new ExtendibleContentManager(this.Services, _contentManagerExtension);
+            Content = new ExtendibleContentManager(Services, _contentManagerExtension);
             Content.RootDirectory = "Content";
         }
 
@@ -134,6 +139,14 @@ namespace DeveMazeGeneratorMonoGame
             FixScreenSize();
 
             base.Initialize();
+
+
+
+
+            mapData = new MapData();
+
+            platformerGame = new CoolPlatformerGame(mapData);
+            mapEditor = new MapEditor(mapData);
         }
 
         /// <summary>
@@ -149,12 +162,12 @@ namespace DeveMazeGeneratorMonoGame
             ContentDing.GoLoadContent(GraphicsDevice, Content);
         }
 
-        private void Window_OrientationChanged(object sender, System.EventArgs e)
+        private void Window_OrientationChanged(object sender, EventArgs e)
         {
             FixScreenSize();
         }
 
-        private void Window_ClientSizeChanged(object sender, System.EventArgs e)
+        private void Window_ClientSizeChanged(object sender, EventArgs e)
         {
             FixScreenSize();
         }
@@ -238,6 +251,9 @@ namespace DeveMazeGeneratorMonoGame
                 IsFixedTimeStep = !IsFixedTimeStep;
             }
 
+            mapEditor.Update();
+            platformerGame.Update(gameTime);
+
 
 
             InputDing.AfterUpdate();
@@ -250,15 +266,14 @@ namespace DeveMazeGeneratorMonoGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.CornflowerBlue);
+
             spriteBatch.Begin();
 
-
+            mapEditor.Draw(gameTime, spriteBatch);
+            platformerGame.Draw(gameTime, spriteBatch);
 
             spriteBatch.End();
-
-
-            //GraphicsDevice.BlendState = BlendState.Opaque;
-            //GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 
             base.Draw(gameTime);
         }

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DeveMazeGeneratorMonoGame
+namespace DeveLinePlatformer.MonoGame.Core
 {
     public static class InputDing
     {
@@ -29,6 +29,11 @@ namespace DeveMazeGeneratorMonoGame
             PreMouse = CurMouse;
             PreKey = CurKey;
             PreTouch = CurTouch;
+        }
+
+        public static Vector2 GetCurMousePos()
+        {
+            return new Vector2(CurMouse.X, CurMouse.Y);
         }
 
         public static bool KeyDownUp(Keys key)

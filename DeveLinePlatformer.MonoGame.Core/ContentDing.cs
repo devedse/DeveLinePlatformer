@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DeveMazeGeneratorMonoGame
+namespace DeveLinePlatformer.MonoGame.Core
 {
     public static class ContentDing
     {
