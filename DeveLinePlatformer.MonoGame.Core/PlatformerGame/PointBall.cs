@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 {
