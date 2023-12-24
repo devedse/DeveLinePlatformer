@@ -123,6 +123,20 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                         //var mapLine = new LineEquation(new Vector2(line.LeftBall.Position.X, line.LeftBall.Position.Y), new Vector2(line.RightBall.Position.X, line.RightBall.Position.Y));
                         var mapLine = line.ToLineEquation();
 
+
+                        //This code is needed to prevent a player from intersecting with a line he's currently dropping from
+                        if (speed.X < 0 && line.LeftBall.Position.X >= pos.PootjesX)
+                        {
+                            //We are moving left and this line is to the right of us
+                            continue;
+                        }
+                        if (speed.X > 0 && line.RightBall.Position.X <= pos.PootjesX)
+                        {
+                            //We are moving right and this line is to the left of us
+                            continue;
+                        }
+
+
                         //TODO find the closest line we are intersecting with
 
                         if ((speed.X > 0 && line.Angle < playerDirectionPointLine.Angle) ||
@@ -130,7 +144,7 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                             (speed.X == 0 && speed.Y > 0))
                         {
                             //Changed this to Exclude the tips of the line because if you walk off a line it should not snap you back to the line
-                            var intersect = playerLineEquation.ThisSegmentIntersectWithSegementOfLineExcludingTips(mapLine, out var intersectionPoint);
+                            var intersect = playerLineEquation.ThisSegmentIntersectWithSegementOfLine(mapLine, out var intersectionPoint);
 
                             if (intersect)
                             {
