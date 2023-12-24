@@ -28,9 +28,30 @@ namespace DeveLinePlatformer.MonoGame.Core.LineIntersection
                    && LessOrEqual(targetY, maxY);
         }
 
+        public static bool IsBetweenTwoPointsExclusive(this Vector2 targetPoint, Vector2 point1, Vector2 point2)
+        {
+            float minX = Math.Min(point1.X, point2.X);
+            float minY = Math.Min(point1.Y, point2.Y);
+            float maxX = Math.Max(point1.X, point2.X);
+            float maxY = Math.Max(point1.Y, point2.Y);
+
+            float targetX = targetPoint.X;
+            float targetY = targetPoint.Y;
+
+            return Less(minX, targetX)
+                   && Less(targetX, maxX)
+                   && Less(minY, targetY)
+                   && Less(targetY, maxY);
+        }
+
         private static bool LessOrEqual(float left, float right)
         {
             return left <= right || 1 <= left / right && left / right < 1.00000000001f;
+        }
+
+        private static bool Less(float left, float right)
+        {
+            return left < right;
         }
     }
 }

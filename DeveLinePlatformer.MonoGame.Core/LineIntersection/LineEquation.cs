@@ -138,6 +138,21 @@ namespace DeveLinePlatformer.MonoGame.Core.LineIntersection
             return false;
         }
 
+        public bool ThisSegmentIntersectWithSegementOfLineExcludingTips(LineEquation otherLine, out Vector2 intersectionPoint)
+        {
+            bool hasIntersection = IntersectsWithLine(otherLine, out intersectionPoint);
+            if (hasIntersection)
+            {
+                var inbetween = intersectionPoint.IsBetweenTwoPointsExclusive(otherLine.Start, otherLine.End) && intersectionPoint.IsBetweenTwoPoints(Start, End);
+                if (!inbetween)
+                {
+                    intersectionPoint = new Vector2(0, 0);
+                }
+                return inbetween;
+            }
+            return false;
+        }
+
         public override string ToString()
         {
             return "[" + Start + "], [" + End + "]";
