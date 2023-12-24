@@ -361,7 +361,6 @@ jobs:
     needs: [
       generate_version_number,
       build_windows,
-      build_linux,
       build_linux_monogame_desktopgl,
       build_windows_monogame_desktopgl_onlinux,
       build_windows_monogame_desktopgl,
