@@ -71,11 +71,16 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 
         restartcollision:
 
+
+            Console.WriteLine($"Pos: {pos.PootjesX} {pos.Bottom} PreviousPos: {previousPos.PootjesX} {previousPos.Bottom} (Speed: {speed.X},{speed.Y})");
+
             if (!sticky)
             {
                 speed.Y += 1.0f;
 
                 pos.Bottom += speed.Y;
+
+                Console.WriteLine($"PosCCC: {pos.PootjesX} {pos.Bottom}");
 
                 if (oldStickyLine != null)
                 {
@@ -113,6 +118,8 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                     }
                 }
 
+                Console.WriteLine($"PosBBB: {pos.PootjesX} {pos.Bottom}");
+
                 if (!sticky)
                 {
                     //We did not intersect any lines
@@ -120,6 +127,8 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                     speedRemainder = 0;
                 }
             }
+
+            Console.WriteLine($"PosAAA: {pos.PootjesX} {pos.Bottom}");
 
             if (sticky)
             {
@@ -154,12 +163,12 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 
                             if (nextLine != null)
                             {
-                                pos.PootjesX = nextLine.LeftBall.Position.X;
+                                pos.PootjesX = curStickyLine.RightBall.Position.X;
                                 curStickyLine = nextLine;
                             }
                             else
                             {
-                                pos.Bottom = curStickyLine.LeftBall.Position.Y;
+                                pos.Bottom = curStickyLine.RightBall.Position.Y;
                                 sticky = false;
                                 curStickyLine = null;
                             }
@@ -193,12 +202,12 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 
                             if (nextLine != null)
                             {
-                                pos.PootjesX = nextLine.RightBall.Position.X;
+                                pos.PootjesX = curStickyLine.LeftBall.Position.X;
                                 curStickyLine = nextLine;
                             }
                             else
                             {
-                                pos.Bottom = curStickyLine.RightBall.Position.Y;
+                                pos.Bottom = curStickyLine.LeftBall.Position.Y;
                                 sticky = false;
                                 curStickyLine = null;
                             }
@@ -211,6 +220,8 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                     }
                 }
 
+
+                Console.WriteLine($"PosDDD: {pos.PootjesX} {pos.Bottom}");
 
                 //while (curStickyLine != null && pos.PootjesX < curStickyLine.LeftBall.Position.X)
                 //{
