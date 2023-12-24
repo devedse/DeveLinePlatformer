@@ -67,24 +67,24 @@ jobs:
         docker buildx build -f DeveLinePlatformer.MonoGame.Blazor/Dockerfile --build-arg BUILD_VERSION=${{steps.tags.outputs.version}} --platform linux/arm64,linux/amd64 ${{steps.tags.outputs.tags}} ${{ (github.event_name != 'pull_request' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)) && '--push' || '' }} .
 
 
-  build_linux:
-    needs: generate_version_number
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: Install workload android
-      run: |
-        dotnet workload install android
-    - name: Install dependencies
-      run: dotnet restore DeveLinePlatformerMonoGame.sln
-    - name: Build
-      run: dotnet build DeveLinePlatformerMonoGame.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
-    - name: Test
-      run: dotnet test DeveLinePlatformerMonoGame.sln --no-restore --verbosity normal
+  # build_linux:
+  #   needs: generate_version_number
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - name: Setup .NET Core
+  #     uses: actions/setup-dotnet@v4
+  #     with:
+  #       dotnet-version: 8.0.x
+  #   - name: Install workload android
+  #     run: |
+  #       dotnet workload install android
+  #   - name: Install dependencies
+  #     run: dotnet restore DeveLinePlatformerMonoGame.sln
+  #   - name: Build
+  #     run: dotnet build DeveLinePlatformerMonoGame.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
+  #   - name: Test
+  #     run: dotnet test DeveLinePlatformerMonoGame.sln --no-restore --verbosity normal
 
   build_windows:
     needs: generate_version_number
@@ -127,26 +127,6 @@ jobs:
         directory: ./DeveLinePlatformer.Tests/TestResults
         fail_ci_if_error: true # optional (default = false)
         verbose: true # optional (default = false)
-
-    - name: Run GoPackage.ps1 script
-      run: .\Scripts\GoPackage.ps1
-      shell: pwsh
-
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: DeveLinePlatformer7z
-        path: ./Scripts/Output/DeveLinePlatformer.7z
-    - uses: actions/upload-artifact@v4
-      with:
-        name: DeveLinePlatformerZip
-        path: ./Scripts/Output/DeveLinePlatformer.zip
-    - uses: actions/upload-artifact@v4
-      with:
-        name: DeveLinePlatformerNuGet
-        path: |
-          ./DeveLinePlatformer/bin/Release/*.nupkg
-          ./DeveLinePlatformer/bin/Release/*.snupkg
 
   build_linux_monogame_desktopgl:
     needs: generate_version_number
