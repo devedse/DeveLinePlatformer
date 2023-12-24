@@ -30,6 +30,7 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
         public void Update(GameTime gameTime)
         {
             PointLine oldStickyLine = null;
+            PointLine lineWhereWeWalkedOffFrom = null;
 
             if (InputDing.CurKey.IsKeyDown(Keys.R))
             {
@@ -85,54 +86,70 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                 {
                     var playerDirectionPointLine = new PointLine(new PointBall(pos.PootjesX, previousPos.Bottom), new PointBall(newPotentieelPootjesX, pos.Bottom));
 
-
-                    if (newPotentieelPootjesX > oldStickyLine.LeftBall.Position.X &&
-                        newPotentieelPootjesX < oldStickyLine.RightBall.Position.X)
+                    if (speed.X > 0 && oldStickyLine.Angle < playerDirectionPointLine.Angle)
                     {
-                        Console.WriteLine("Potentieeltje");
-                        if (pos.Bottom >= oldStickyLine.GetYHere(newPotentieelPootjesX))
-                        {
-                            Console.WriteLine("een echte");
-                            //Apparently we slipped through the line we jumped from
-                            sticky = true;
-                            curStickyLine = oldStickyLine;
-                        }
+                        sticky = true;
+                        curStickyLine = oldStickyLine;
+                    }
+                    else if (speed.X < 0 && oldStickyLine.Angle > playerDirectionPointLine.Angle)
+                    {
+                        sticky = true;
+                        curStickyLine = oldStickyLine;
                     }
 
+
+                    //if (newPotentieelPootjesX > oldStickyLine.LeftBall.Position.X &&
+                    //    newPotentieelPootjesX < oldStickyLine.RightBall.Position.X)
+                    //{
+                    //    Console.WriteLine("Potentieeltje");
+                    //    if (pos.Bottom >= oldStickyLine.GetYHere(newPotentieelPootjesX))
+                    //    {
+                    //        Console.WriteLine("een echte");
+                    //        //Apparently we slipped through the line we jumped from
+                    //        sticky = true;
+                    //        curStickyLine = oldStickyLine;
+                    //    }
+                    //}
+
                 }
-                else
+
+
+                if (!sticky)
                 {
                     var playerDirectionPointLine = new PointLine(new PointBall(pos.PootjesX, previousPos.Bottom), new PointBall(newPotentieelPootjesX, pos.Bottom));
                     //LineEquation l = new LineEquation(new Vector2(previousPos.PootjesX, previousPos.Bottom), new Vector2(newPotentieelPootjesX, pos.Bottom));
-                    var l = playerDirectionPointLine.ToLineEquation();
+                    var playerLineEquation = playerDirectionPointLine.ToLineEquation();
                     foreach (var line in mapData.lines)
                     {
-                        //var mapLine = new LineEquation(new Vector2(line.LeftBall.Position.X, line.LeftBall.Position.Y), new Vector2(line.RightBall.Position.X, line.RightBall.Position.Y));
-                        var mapLine = line.ToLineEquation();
-                        Vector2 intersectionPoint;
-
-                        //TODO find the closest line we are intersecting with
-
-                        if ((speed.X > 0 && line.Angle < playerDirectionPointLine.Angle) ||
-                            (speed.X < 0 && line.Angle > playerDirectionPointLine.Angle) ||
-                            speed.X == 0)
+                        //If you walk off a line, you it should ignore that line for collision detection as you're now off it
+                        if (line != lineWhereWeWalkedOffFrom)
                         {
-                            Boolean intersect = l.ThisSegmentIntersectWithSegementOfLine(mapLine, out intersectionPoint);
+                            //var mapLine = new LineEquation(new Vector2(line.LeftBall.Position.X, line.LeftBall.Position.Y), new Vector2(line.RightBall.Position.X, line.RightBall.Position.Y));
+                            var mapLine = line.ToLineEquation();
+                            Vector2 intersectionPoint;
 
-                            if (intersect)
+                            //TODO find the closest line we are intersecting with
+
+                            if ((speed.X > 0 && line.Angle < playerDirectionPointLine.Angle) ||
+                                (speed.X < 0 && line.Angle > playerDirectionPointLine.Angle) ||
+                                (speed.X == 0 && speed.Y > 0))
                             {
-                                Console.WriteLine($"R: Angle player: {playerDirectionPointLine.Angle} Angle line: {line.Angle}");
+                                Boolean intersect = playerLineEquation.ThisSegmentIntersectWithSegementOfLine(mapLine, out intersectionPoint);
 
-                                speedRemainder = intersectionPoint.X - pos.PootjesX;
-                                pos.PootjesX = intersectionPoint.X;
-                                sticky = true;
-                                curStickyLine = line;
-                                break;
+                                if (intersect)
+                                {
+                                    Console.WriteLine($"R: Angle player: {playerDirectionPointLine.Angle} Angle line: {line.Angle}");
+
+                                    speedRemainder = intersectionPoint.X - pos.PootjesX;
+                                    pos.PootjesX = intersectionPoint.X;
+                                    sticky = true;
+                                    curStickyLine = line;
+                                    break;
+                                }
                             }
                         }
-
-
                     }
+                    lineWhereWeWalkedOffFrom = null;
                 }
 
                 if (!sticky)
@@ -183,6 +200,7 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                             {
                                 pos.Bottom = curStickyLine.RightBall.Position.Y;
                                 sticky = false;
+                                lineWhereWeWalkedOffFrom = curStickyLine;
                                 curStickyLine = null;
                             }
                         }
