@@ -77,11 +77,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Install dependencies
-      run: dotnet restore DeveLinePlatformer.sln
+      run: dotnet restore DeveLinePlatformerMonoGame.sln
     - name: Build
-      run: dotnet build DeveLinePlatformer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
+      run: dotnet build DeveLinePlatformerMonoGame.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
     - name: Test
-      run: dotnet test DeveLinePlatformer.sln --no-restore --verbosity normal
+      run: dotnet test DeveLinePlatformerMonoGame.sln --no-restore --verbosity normal
 
   build_windows:
     needs: generate_version_number
@@ -103,14 +103,14 @@ jobs:
         dotnet tool install --global dotnet-sonarscanner
         dotnet tool install --global dotnet-reportgenerator-globaltool
     - name: Install dependencies
-      run: dotnet restore DeveLinePlatformer.sln
+      run: dotnet restore DeveLinePlatformerMonoGame.sln
     - name: SonarQube begin
       if: github.actor != 'dependabot[bot]'
       run: dotnet-sonarscanner begin /k:"DeveLinePlatformer" /o:"devedse-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login=${{secrets.SONARQUBETOKEN}} /d:sonar.cs.opencover.reportsPaths=".\DeveLinePlatformer.Tests\TestResults\Coverage\coverage.opencover.xml" /d:sonar.coverage.exclusions="DeveLinePlatformer.ConsoleApp/**/*.cs,DeveLinePlatformer.Tests/**/*.cs,DeveLinePlatformer.Web/wwwroot/divisionmaze/**/*.js"
     - name: Build
-      run: dotnet build DeveLinePlatformer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
+      run: dotnet build DeveLinePlatformerMonoGame.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
     - name: Test
-      run: dotnet test DeveLinePlatformer.sln --verbosity normal --no-build -c Release --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover
+      run: dotnet test DeveLinePlatformerMonoGame.sln --verbosity normal --no-build -c Release --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura,opencover
     - name: SonarQube end
       if: github.actor != 'dependabot[bot]'
       env:
@@ -155,11 +155,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Install dependencies
-      run: dotnet restore DeveLinePlatformer.sln
-    - name: Build
-      run: dotnet build DeveLinePlatformer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
-    - name: Test
-      run: dotnet test DeveLinePlatformer.sln --no-restore --verbosity normal
+      run: dotnet restore DeveLinePlatformerMonoGame.sln
+    # - name: Build
+    #   run: dotnet build DeveLinePlatformerMonoGame.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
+    # - name: Test
+    #   run: dotnet test DeveLinePlatformerMonoGame.sln --no-restore --verbosity normal
     - name: Publish
       run: dotnet publish ./DeveLinePlatformer.MonoGame.DesktopGL/DeveLinePlatformer.MonoGame.DesktopGL.csproj -r linux-x64 -c Release /p:PublishSingleFile=true /p:SelfContained=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=false /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
     - name: Copy files that are missing for some reason
@@ -193,11 +193,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Install dependencies
-      run: dotnet restore DeveLinePlatformer.sln
-    - name: Build
-      run: dotnet build DeveLinePlatformer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
-    - name: Test
-      run: dotnet test DeveLinePlatformer.sln --no-restore --verbosity normal
+      run: dotnet restore DeveLinePlatformerMonoGame.sln
+    # - name: Build
+    #   run: dotnet build DeveLinePlatformerMonoGame.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
+    # - name: Test
+    #   run: dotnet test DeveLinePlatformerMonoGame.sln --no-restore --verbosity normal
     - name: Publish
       run: dotnet publish ./DeveLinePlatformer.MonoGame.DesktopGL/DeveLinePlatformer.MonoGame.DesktopGL.csproj -r win-x64 -c Release /p:PublishSingleFile=true /p:SelfContained=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=false /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
     - name: Copy files that are missing for some reason
@@ -234,11 +234,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Install dependencies
-      run: dotnet restore DeveLinePlatformer.sln
-    - name: Build
-      run: dotnet build DeveLinePlatformer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
-    - name: Test
-      run: dotnet test DeveLinePlatformer.sln --no-restore --verbosity normal
+      run: dotnet restore DeveLinePlatformerMonoGame.sln
+    # - name: Build
+    #   run: dotnet build DeveLinePlatformerMonoGame.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
+    # - name: Test
+    #   run: dotnet test DeveLinePlatformerMonoGame.sln --no-restore --verbosity normal
     - name: Publish
       run: dotnet publish ./DeveLinePlatformer.MonoGame.DesktopGL/DeveLinePlatformer.MonoGame.DesktopGL.csproj -r win-x64 -c Release /p:PublishSingleFile=true /p:SelfContained=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=false /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
     - name: Copy files that are missing for some reason
@@ -266,11 +266,11 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Install dependencies
-      run: dotnet restore DeveLinePlatformer.sln
-    - name: Build
-      run: dotnet build DeveLinePlatformer.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
-    - name: Test
-      run: dotnet test DeveLinePlatformer.sln --no-restore --verbosity normal
+      run: dotnet restore DeveLinePlatformerMonoGame.sln
+    # - name: Build
+    #   run: dotnet build DeveLinePlatformerMonoGame.sln -c Release --no-restore /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
+    # - name: Test
+    #   run: dotnet test DeveLinePlatformerMonoGame.sln --no-restore --verbosity normal
     - name: Publish
       run: dotnet publish ./DeveLinePlatformer.MonoGame.WindowsDX\DeveLinePlatformer.MonoGame.WindowsDX.csproj -r win-x64 -c Release /p:PublishSingleFile=true /p:SelfContained=true /p:IncludeNativeLibrariesForSelfExtract=true /p:PublishTrimmed=false /p:Version=1.0.${{needs.generate_version_number.outputs.build_number}}
     - name: Copy files that are missing for some reason
