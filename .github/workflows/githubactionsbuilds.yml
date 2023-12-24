@@ -76,6 +76,9 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 8.0.x
+    - name: Install workload android
+      run: |
+        dotnet workload install android
     - name: Install dependencies
       run: dotnet restore DeveLinePlatformerMonoGame.sln
     - name: Build
