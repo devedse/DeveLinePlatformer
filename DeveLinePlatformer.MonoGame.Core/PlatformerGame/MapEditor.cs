@@ -85,7 +85,7 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                 spriteBatch.DrawLine(3, Color.White, selectedBalls.First().Position, InputDing.GetCurMousePos());
             }
 
-            spriteBatch.DrawString(ContentDing.spriteFont, "Lines: " + mapData.lines.Count + ", Balls: " + mapData.balls.Count + ", SelectedBalls: " + selectedBalls.Count + " PossibleSelectedBalls: " + possibleSelectingBalls.Count, new Vector2(10, 10), Color.White);
+            spriteBatch.DrawString(ContentDing.spriteFont, $"Version: {TheGame.Version} Lines: {mapData.lines.Count}, Balls: {mapData.balls.Count}, SelectedBalls: {selectedBalls.Count} PossibleSelectedBalls: {possibleSelectingBalls.Count}", new Vector2(10, 10), Color.White);
         }
 
         public void Update()

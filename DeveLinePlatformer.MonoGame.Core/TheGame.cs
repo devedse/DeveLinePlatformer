@@ -30,7 +30,7 @@ namespace DeveLinePlatformer.MonoGame.Core
         public int ScreenHeight { get; private set; }
 
 
-        private readonly string _version = typeof(TheGame).Assembly.GetName().Version.ToString();
+        public static readonly string Version = typeof(TheGame).Assembly.GetName().Version.ToString();
 
         private MapData mapData;
         private MapEditor mapEditor;
