@@ -130,15 +130,15 @@ jobs:
       shell: pwsh
 
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformer7z
         path: ./Scripts/Output/DeveLinePlatformer.7z
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformerZip
         path: ./Scripts/Output/DeveLinePlatformer.zip
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformerNuGet
         path: |
@@ -175,7 +175,7 @@ jobs:
     - name: 7zip output
       run: |
         7z a -t7z -m0=LZMA2 -mmt=on -mx9 -md=1536m -mfb=273 -ms=on -mqs=on -sccUTF-8 "DeveLinePlatformer.MonoGame.DesktopGL_linux-x64.7z" "./DeveLinePlatformer.MonoGame.DesktopGL/bin/Release/net8.0/linux-x64/publish/*" '-x!*.pdb'
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformer.MonoGame.DesktopGL_linux-x64
         path: DeveLinePlatformer.MonoGame.DesktopGL_linux-x64.tar.gz
@@ -215,11 +215,11 @@ jobs:
     - name: 7zip output
       run: |
         7z a -t7z -m0=LZMA2 -mmt=on -mx9 -md=1536m -mfb=273 -ms=on -mqs=on -sccUTF-8 "DeveLinePlatformer.MonoGame.DesktopGL_win-x64_onlinux.7z" "./DeveLinePlatformer.MonoGame.DesktopGL/bin/Release/net8.0/win-x64/publish/*" '-x!*.pdb'
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformer.MonoGame.DesktopGL_win-x64_onlinuxtargz
         path: DeveLinePlatformer.MonoGame.DesktopGL_win-x64_onlinux.tar.gz
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformer.MonoGame.DesktopGL_win-x64_onlinux
         path: DeveLinePlatformer.MonoGame.DesktopGL_win-x64_onlinux.7z
@@ -251,7 +251,7 @@ jobs:
     - name: 7zip output
       run: |
         7z a -t7z -m0=LZMA2 -mmt=on -mx9 -md=1536m -mfb=273 -ms=on -mqs=on -sccUTF-8 "DeveLinePlatformer.MonoGame.DesktopGL_win-x64.7z" "./DeveLinePlatformer.MonoGame.DesktopGL/bin/Release/net8.0/win-x64/Publish/*" '-x!*.pdb'
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformer.MonoGame.DesktopGL_win-x64
         path: DeveLinePlatformer.MonoGame.DesktopGL_win-x64.7z
@@ -282,7 +282,7 @@ jobs:
     - name: 7zip output
       run: |
         7z a -t7z -m0=LZMA2 -mmt=on -mx9 -md=1536m -mfb=273 -ms=on -mqs=on -sccUTF-8 "DeveLinePlatformer.MonoGame.WindowsDX_win-x64.7z" "./DeveLinePlatformer.MonoGame.WindowsDX/bin/Release/net8.0-windows/win-x64/Publish/*" '-x!*.pdb'
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformer.MonoGame.WindowsDX_win-x64
         path: DeveLinePlatformer.MonoGame.WindowsDX_win-x64.7z
@@ -325,7 +325,7 @@ jobs:
     #   run: |
     #     7z a -t7z -m0=LZMA2 -mmt=on -mx9 -md=1536m -mfb=273 -ms=on -mqs=on -sccUTF-8 "./Scripts/Output/DeveLinePlatformer.MonoGame.Android.7z" "DeveLinePlatformer.MonoGame.Android\*" '-x!*.pdb'
     #   shell: powershell
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformer.MonoGame.Android_aab
         path: ./DeveLinePlatformer.MonoGame.Android/bin/Release/net8.0-android/develineplatformermonogame_android.develineplatformermonogame_android-Signed.aab
@@ -368,7 +368,7 @@ jobs:
     #   run: |
     #     7z a -t7z -m0=LZMA2 -mmt=on -mx9 -md=1536m -mfb=273 -ms=on -mqs=on -sccUTF-8 "./Scripts/Output/DeveLinePlatformer.MonoGame.Android.7z" "DeveLinePlatformer.MonoGame.Android\*" '-x!*.pdb'
     #   shell: powershell
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: DeveLinePlatformer.MonoGame.Android_apk
         path: ./DeveLinePlatformer.MonoGame.Android/bin/Release/net8.0-android/develineplatformermonogame_android.develineplatformermonogame_android-Signed.apk
