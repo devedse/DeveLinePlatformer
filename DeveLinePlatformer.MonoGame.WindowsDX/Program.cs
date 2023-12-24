@@ -1,6 +1,5 @@
 ﻿using DeveLinePlatformer.MonoGame.Core;
 using DeveLinePlatformer.MonoGame.Core.HelperObjects;
-using DeveMazeGeneratorMonoGame;
 using System;
 
 namespace DeveLinePlatformer.MonoGame.WindowsDX

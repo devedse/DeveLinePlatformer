@@ -1,10 +1,9 @@
 using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using Android.Util;
 using Android.Views;
+using DeveLinePlatformer.MonoGame.Core;
 using DeveLinePlatformer.MonoGame.Core.HelperObjects;
-using DeveMazeGeneratorMonoGame;
 
 namespace DeveLinePlatformer.MonoGame.Android
 {
