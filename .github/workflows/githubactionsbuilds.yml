@@ -379,7 +379,6 @@ jobs:
       generate_version_number,
       build_windows,
       build_linux,
-      build_docker,
       build_linux_monogame_desktopgl,
       build_windows_monogame_desktopgl_onlinux,
       build_windows_monogame_desktopgl,
@@ -417,21 +416,11 @@ jobs:
       with:
         tag_name: 1.0.${{needs.generate_version_number.outputs.build_number}}
         files: |
-          ./artifacts/DeveLinePlatformer7z/DeveLinePlatformer.7z
-          ./artifacts/DeveLinePlatformerZip/DeveLinePlatformer.zip
-          ./artifacts/DeveLinePlatformerNuGet/*.nupkg
-          ./artifacts/DeveLinePlatformerNuGet/*.snupkg
           ./artifacts/DeveLinePlatformer.MonoGame.DesktopGL_linux-x64/DeveLinePlatformer.MonoGame.DesktopGL_linux-x64.tar.gz
           ./artifacts/DeveLinePlatformer.MonoGame.DesktopGL_win-x64_onlinux/DeveLinePlatformer.MonoGame.DesktopGL_win-x64_onlinux.7z
           ./artifacts/DeveLinePlatformer.MonoGame.DesktopGL_win-x64/DeveLinePlatformer.MonoGame.DesktopGL_win-x64.7z
           ./artifacts/DeveLinePlatformer.MonoGame.WindowsDX_win-x64/DeveLinePlatformer.MonoGame.WindowsDX_win-x64.7z
           ./artifacts/DeveLinePlatformer.MonoGame.Android_aab/develineplatformermonogame_android.develineplatformermonogame_android-Signed.aab
           ./artifacts/DeveLinePlatformer.MonoGame.Android_apk/develineplatformermonogame_android.develineplatformermonogame_android-Signed.apk
-          ./artifacts/DeveLinePlatformer.ConsoleApp/DeveMazeGenerator.ConsoleApp.Untrimmed.exe
-          ./artifacts/DeveLinePlatformer.ConsoleApp/DeveMazeGenerator.ConsoleApp.Trimmed.exe
-          ./artifacts/DeveLinePlatformer.ConsoleApp/DeveMazeGenerator.ConsoleApp.TrimmedAot.exe
-          ./artifacts/DeveLinePlatformer.ConsoleApp/DeveMazeGenerator.ConsoleApp.Untrimmed
-          ./artifacts/DeveLinePlatformer.ConsoleApp/DeveMazeGenerator.ConsoleApp.Trimmed
-          ./artifacts/DeveLinePlatformer.ConsoleApp/DeveMazeGenerator.ConsoleApp.TrimmedAot
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
