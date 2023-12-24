@@ -29,6 +29,8 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 
         public void Update(GameTime gameTime)
         {
+            PointLine oldStickyLine = null;
+
             if (InputDing.CurKey.IsKeyDown(Keys.R))
             {
                 pos = new RectaleFloater(100, 100, 64, 128);
@@ -57,12 +59,15 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
             {
                 speed.Y = -20.0f;
                 sticky = false;
+                oldStickyLine = curStickyLine;
                 curStickyLine = null;
             }
 
-            Console.WriteLine(sticky);
+            //Console.WriteLine(sticky);
 
-            pos.PootjesX += speed.X;
+            var speedRemainder = speed.X;
+            var newPotentieelPootjesX = pos.PootjesX + speedRemainder;
+        //pos.PootjesX += speed.X;
 
         restartcollision:
 
@@ -72,21 +77,47 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 
                 pos.Bottom += speed.Y;
 
-                if (speed.Y > 0)
+                if (oldStickyLine != null)
                 {
-                    LineEquation l = new LineEquation(new Vector2(previousPos.PootjesX, previousPos.Bottom), new Vector2(pos.PootjesX, pos.Bottom));
+                    if (newPotentieelPootjesX > oldStickyLine.LeftBall.Position.X &&
+                        newPotentieelPootjesX < oldStickyLine.RightBall.Position.X)
+                    {
+                        Console.WriteLine("Potentieeltje");
+                        if (pos.Bottom >= oldStickyLine.GetYHere(newPotentieelPootjesX))
+                        {
+                            Console.WriteLine("een echte");
+                            //Apparently we slipped through the line we jumped from
+                            sticky = true;
+                            curStickyLine = oldStickyLine;
+                        }
+                    }
+
+                }
+                else if (speed.Y > 0)
+                {
+                    LineEquation l = new LineEquation(new Vector2(previousPos.PootjesX, previousPos.Bottom), new Vector2(newPotentieelPootjesX, pos.Bottom));
                     foreach (var line in mapData.lines)
                     {
                         var mapLine = new LineEquation(new Vector2(line.LeftBall.Position.X, line.LeftBall.Position.Y), new Vector2(line.RightBall.Position.X, line.RightBall.Position.Y));
                         Vector2 intersectionPoint;
                         Boolean intersect = l.ThisSegmentIntersectWithSegementOfLine(mapLine, out intersectionPoint);
+                        //TODO find the closest line we are intersecting with
                         if (intersect)
                         {
+                            speedRemainder = intersectionPoint.X - pos.PootjesX;
+                            pos.PootjesX = intersectionPoint.X;
                             sticky = true;
                             curStickyLine = line;
                             break;
                         }
                     }
+                }
+
+                if (!sticky)
+                {
+                    //We did not intersect any lines
+                    pos.PootjesX += speedRemainder;
+                    speedRemainder = 0;
                 }
             }
 
@@ -94,42 +125,129 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
             {
                 speed.Y = 0;
 
-                while (curStickyLine != null && pos.PootjesX < curStickyLine.LeftBall.Position.X)
+                //2
+                if (speedRemainder > 0)
                 {
-                    var possibleLines = mapData.lines.Where(t => t.RightBall.Position.Y == curStickyLine.LeftBall.Position.Y && t.RightBall.Position.X == curStickyLine.LeftBall.Position.X)
-                        .OrderByDescending(tt => tt.Angle);
+                    //Moving right
 
-                    var nextLine = possibleLines.FirstOrDefault(); //Highest line connecting to ball
-                    if (nextLine != null)
+                    while (curStickyLine != null && speedRemainder > 0)
                     {
-                        curStickyLine = nextLine;
+                        var speedXAtThisLine = (float)Math.Cos(curStickyLine.Angle);
+                        //0.2 = 2 * 0.1
+                        var toMove = speedRemainder * speedXAtThisLine;
+
+                        //15 + 0.2 - 15.15 = 0.05
+                        var howFarBeyond = pos.PootjesX + toMove - curStickyLine.RightBall.Position.X;
+                        if (howFarBeyond > 0)
+                        {
+                            //We used 75% of the speed to move to the next line
+                            //We have 25% of the speed left
+                            
+                            //Percent
+                            var howMuchPercentWeHaveRemaining = howFarBeyond / toMove;
+                            speedRemainder = speedRemainder * howMuchPercentWeHaveRemaining;
+
+                            var possibleLines = mapData.lines.Where(t => t.LeftBall.Position.Y == curStickyLine.RightBall.Position.Y && t.LeftBall.Position.X == curStickyLine.RightBall.Position.X)
+                                .OrderBy(tt => tt.Angle);
+
+                            var nextLine = possibleLines.FirstOrDefault(); //Highest line connecting to ball
+
+                            if (nextLine != null)
+                            {
+                                pos.PootjesX = nextLine.LeftBall.Position.X;
+                                curStickyLine = nextLine;
+                            }
+                            else
+                            {
+                                pos.Bottom = curStickyLine.LeftBall.Position.Y;
+                                sticky = false;
+                                curStickyLine = null;
+                            }
+                        }
+                        else
+                        {
+                            speedRemainder = 0;
+                            pos.PootjesX += toMove;
+                        }
                     }
-                    else
+                }
+                else if (speedRemainder < 0)
+                {
+                    //Moving left
+
+                    while (curStickyLine != null && speedRemainder < 0)
                     {
-                        pos.Bottom = curStickyLine.LeftBall.Position.Y;
-                        sticky = false;
-                        curStickyLine = null;
+                        var speedXAtThisLine = (float)Math.Cos(curStickyLine.Angle);
+                        var toMove = speedRemainder * speedXAtThisLine;
+
+                        var howFarBefore = pos.PootjesX + toMove - curStickyLine.LeftBall.Position.X;
+                        if (howFarBefore < 0)
+                        {
+                            var howMuchPercentWeHaveRemaining = Math.Abs(howFarBefore / toMove);
+                            speedRemainder = speedRemainder * howMuchPercentWeHaveRemaining;
+
+                            var possibleLines = mapData.lines.Where(t => t.RightBall.Position.Y == curStickyLine.LeftBall.Position.Y && t.RightBall.Position.X == curStickyLine.LeftBall.Position.X)
+                                                .OrderByDescending(tt => tt.Angle);
+
+                            var nextLine = possibleLines.FirstOrDefault(); // Highest line connecting to ball on the left
+
+                            if (nextLine != null)
+                            {
+                                pos.PootjesX = nextLine.RightBall.Position.X;
+                                curStickyLine = nextLine;
+                            }
+                            else
+                            {
+                                pos.Bottom = curStickyLine.RightBall.Position.Y;
+                                sticky = false;
+                                curStickyLine = null;
+                            }
+                        }
+                        else
+                        {
+                            speedRemainder = 0;
+                            pos.PootjesX += toMove;
+                        }
                     }
                 }
 
-                while (curStickyLine != null && pos.PootjesX > curStickyLine.RightBall.Position.X)
-                {
-                    var possibleLines = mapData.lines.Where(t => t.LeftBall.Position.Y == curStickyLine.RightBall.Position.Y && t.LeftBall.Position.X == curStickyLine.RightBall.Position.X)
-                        .OrderBy(tt => tt.Angle);
 
-                    var nextLine = possibleLines.FirstOrDefault(); //Highest line connecting to ball
+                //while (curStickyLine != null && pos.PootjesX < curStickyLine.LeftBall.Position.X)
+                //{
+                //    var possibleLines = mapData.lines.Where(t => t.RightBall.Position.Y == curStickyLine.LeftBall.Position.Y && t.RightBall.Position.X == curStickyLine.LeftBall.Position.X)
+                //        .OrderByDescending(tt => tt.Angle);
 
-                    if (nextLine != null)
-                    {
-                        curStickyLine = nextLine;
-                    }
-                    else
-                    {
-                        pos.Bottom = curStickyLine.RightBall.Position.Y;
-                        sticky = false;
-                        curStickyLine = null;
-                    }
-                }
+                //    var nextLine = possibleLines.FirstOrDefault(); //Highest line connecting to ball
+                //    if (nextLine != null)
+                //    {
+                //        curStickyLine = nextLine;
+                //    }
+                //    else
+                //    {
+                //        pos.Bottom = curStickyLine.LeftBall.Position.Y;
+                //        sticky = false;
+                //        curStickyLine = null;
+                //    }
+                //}
+
+                //while (curStickyLine != null && pos.PootjesX > curStickyLine.RightBall.Position.X)
+                //{
+                //    var possibleLines = mapData.lines.Where(t => t.LeftBall.Position.Y == curStickyLine.RightBall.Position.Y && t.LeftBall.Position.X == curStickyLine.RightBall.Position.X)
+                //        .OrderBy(tt => tt.Angle);
+
+                //    var nextLine = possibleLines.FirstOrDefault(); //Highest line connecting to ball
+
+                //    if (nextLine != null)
+                //    {
+                //        curStickyLine = nextLine;
+                //    }
+                //    else
+                //    {
+                //        pos.Bottom = curStickyLine.RightBall.Position.Y;
+                //        sticky = false;
+                //        curStickyLine = null;
+                //    }
+                //}
 
                 if (curStickyLine != null)
                 {

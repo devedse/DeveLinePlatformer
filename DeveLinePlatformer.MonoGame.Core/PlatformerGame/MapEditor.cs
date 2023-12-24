@@ -24,13 +24,13 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 
             if (true)
             {
-                float mmm = 10.0f;
+                float mmm = 20.0f;
                 var preball = new PointBall(-100, 0);
                 mapData.balls.Add(preball);
                 float lastx = 0;
-                for (float x = 0; x < 800; x += mmm)
+                for (float x = 0; x < 1400; x += mmm)
                 {
-                    var yone = (float)Math.Sin(x / 40.0) * 50 + 700;
+                    var yone = (float)Math.Sin(x / 80.0) * 300 + 700;
                     var ytwo = (float)Math.Sin((x + 1) / 40.0) * 50 + 700;
 
                     var nextball = new PointBall(x + mmm, yone);
@@ -41,18 +41,18 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                     lastx = x;
                 }
 
-                for (float x = lastx; x < 1600; x += mmm)
-                {
-                    var yone = (float)Math.Tan(x / 40.0) * 50 + 700;
-                    var ytwo = (float)Math.Tan((x + 1) / 40.0) * 50 + 700;
+                //for (float x = lastx; x < 1600; x += mmm)
+                //{
+                //    var yone = (float)Math.Tan(x / 40.0) * 50 + 700;
+                //    var ytwo = (float)Math.Tan((x + 1) / 40.0) * 50 + 700;
 
-                    var nextball = new PointBall(x + mmm, yone);
-                    mapData.balls.Add(nextball);
+                //    var nextball = new PointBall(x + mmm, yone);
+                //    mapData.balls.Add(nextball);
 
-                    AddLine(preball, nextball);
-                    preball = nextball;
-                    lastx = x;
-                }
+                //    AddLine(preball, nextball);
+                //    preball = nextball;
+                //    lastx = x;
+                //}
             }
         }
 

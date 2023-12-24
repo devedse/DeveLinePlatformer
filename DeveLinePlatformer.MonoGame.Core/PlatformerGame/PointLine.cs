@@ -73,5 +73,10 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 
             return cury;
         }
+
+        public override string ToString()
+        {
+            return $"({LeftBall.Position.X},{LeftBall.Position.Y}) ({RightBall.Position.X},{RightBall.Position.Y}) {Angle}";
+        }
     }
 }
