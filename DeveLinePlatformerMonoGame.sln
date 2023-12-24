@@ -17,7 +17,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DeveLinePlatformer.MonoGame
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveLinePlatformer.MonoGame.Android", "DeveLinePlatformer.MonoGame.Android\DeveLinePlatformer.MonoGame.Android.csproj", "{DE5ACA0D-D621-4707-942F-AE67EE7B1CA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeveLinePlatformer.Tests", "DeveLinePlatformer.Tests\DeveLinePlatformer.Tests.csproj", "{9F8E7FE2-4C09-43D9-B930-B3CCDCA95FFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeveLinePlatformer.Tests", "DeveLinePlatformer.Tests\DeveLinePlatformer.Tests.csproj", "{9F8E7FE2-4C09-43D9-B930-B3CCDCA95FFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

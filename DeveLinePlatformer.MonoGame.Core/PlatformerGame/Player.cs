@@ -14,7 +14,7 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
         private MapData mapData;
         private RectaleFloater pos;
         private Vector2 speed = new Vector2();
-        private Boolean sticky = false;
+        private bool sticky = false;
 
         public Player(MapData mapData)
         {
@@ -142,7 +142,7 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                         {
                             //We used 75% of the speed to move to the next line
                             //We have 25% of the speed left
-                            
+
                             //Percent
                             var howMuchPercentWeHaveRemaining = howFarBeyond / toMove;
                             speedRemainder = speedRemainder * howMuchPercentWeHaveRemaining;
