@@ -71,8 +71,9 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 
         restartcollision:
 
+            //Console.WriteLine(mapData.lines[20].Angle);
 
-            Console.WriteLine($"Pos: {pos.PootjesX} {pos.Bottom} PreviousPos: {previousPos.PootjesX} {previousPos.Bottom} (Speed: {speed.X},{speed.Y})");
+            //Console.WriteLine($"Pos: {pos.PootjesX} {pos.Bottom} PreviousPos: {previousPos.PootjesX} {previousPos.Bottom} (Speed: {speed.X},{speed.Y})");
 
             if (!sticky)
             {
@@ -80,10 +81,11 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
 
                 pos.Bottom += speed.Y;
 
-                Console.WriteLine($"PosCCC: {pos.PootjesX} {pos.Bottom}");
-
                 if (oldStickyLine != null)
                 {
+                    var playerDirectionPointLine = new PointLine(new PointBall(pos.PootjesX, previousPos.Bottom), new PointBall(newPotentieelPootjesX, pos.Bottom));
+
+
                     if (newPotentieelPootjesX > oldStickyLine.LeftBall.Position.X &&
                         newPotentieelPootjesX < oldStickyLine.RightBall.Position.X)
                     {
@@ -98,27 +100,40 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                     }
 
                 }
-                else if (speed.Y > 0)
+                else
                 {
-                    LineEquation l = new LineEquation(new Vector2(previousPos.PootjesX, previousPos.Bottom), new Vector2(newPotentieelPootjesX, pos.Bottom));
+                    var playerDirectionPointLine = new PointLine(new PointBall(pos.PootjesX, previousPos.Bottom), new PointBall(newPotentieelPootjesX, pos.Bottom));
+                    //LineEquation l = new LineEquation(new Vector2(previousPos.PootjesX, previousPos.Bottom), new Vector2(newPotentieelPootjesX, pos.Bottom));
+                    var l = playerDirectionPointLine.ToLineEquation();
                     foreach (var line in mapData.lines)
                     {
-                        var mapLine = new LineEquation(new Vector2(line.LeftBall.Position.X, line.LeftBall.Position.Y), new Vector2(line.RightBall.Position.X, line.RightBall.Position.Y));
+                        //var mapLine = new LineEquation(new Vector2(line.LeftBall.Position.X, line.LeftBall.Position.Y), new Vector2(line.RightBall.Position.X, line.RightBall.Position.Y));
+                        var mapLine = line.ToLineEquation();
                         Vector2 intersectionPoint;
-                        Boolean intersect = l.ThisSegmentIntersectWithSegementOfLine(mapLine, out intersectionPoint);
+
                         //TODO find the closest line we are intersecting with
-                        if (intersect)
+
+                        if ((speed.X > 0 && line.Angle < playerDirectionPointLine.Angle) ||
+                            (speed.X < 0 && line.Angle > playerDirectionPointLine.Angle) ||
+                            speed.X == 0)
                         {
-                            speedRemainder = intersectionPoint.X - pos.PootjesX;
-                            pos.PootjesX = intersectionPoint.X;
-                            sticky = true;
-                            curStickyLine = line;
-                            break;
+                            Boolean intersect = l.ThisSegmentIntersectWithSegementOfLine(mapLine, out intersectionPoint);
+
+                            if (intersect)
+                            {
+                                Console.WriteLine($"R: Angle player: {playerDirectionPointLine.Angle} Angle line: {line.Angle}");
+
+                                speedRemainder = intersectionPoint.X - pos.PootjesX;
+                                pos.PootjesX = intersectionPoint.X;
+                                sticky = true;
+                                curStickyLine = line;
+                                break;
+                            }
                         }
+
+
                     }
                 }
-
-                Console.WriteLine($"PosBBB: {pos.PootjesX} {pos.Bottom}");
 
                 if (!sticky)
                 {
@@ -127,8 +142,6 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                     speedRemainder = 0;
                 }
             }
-
-            Console.WriteLine($"PosAAA: {pos.PootjesX} {pos.Bottom}");
 
             if (sticky)
             {
@@ -220,8 +233,6 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                     }
                 }
 
-
-                Console.WriteLine($"PosDDD: {pos.PootjesX} {pos.Bottom}");
 
                 //while (curStickyLine != null && pos.PootjesX < curStickyLine.LeftBall.Position.X)
                 //{

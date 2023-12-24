@@ -1,4 +1,5 @@
 ﻿using DeveLinePlatformer.MonoGame.Core.ExtensionMethods;
+using DeveLinePlatformer.MonoGame.Core.LineIntersection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -77,6 +78,11 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
         public override string ToString()
         {
             return $"({LeftBall.Position.X},{LeftBall.Position.Y}) ({RightBall.Position.X},{RightBall.Position.Y}) {Angle}";
+        }
+
+        public LineEquation ToLineEquation()
+        {
+            return new LineEquation(LeftBall.Position, RightBall.Position);
         }
     }
 }
