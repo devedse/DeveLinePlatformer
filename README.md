@@ -12,7 +12,7 @@ This is my sample Line Platformer, it's WIP but my plan is to have physics solve
 
 | Docker Hub |
 |:----------:|
-| [![Docker pulls](https://img.shields.io/docker/v/devedse/DeveLinePlatformerweb)](https://hub.docker.com/r/devedse/DeveLinePlatformerweb/) |
+| [![Docker pulls](https://img.shields.io/docker/v/devedse/develineplatformermonogameblazor)](https://hub.docker.com/r/devedse/develineplatformermonogameblazor/) |
 
 ## Code Coverage Status
 
