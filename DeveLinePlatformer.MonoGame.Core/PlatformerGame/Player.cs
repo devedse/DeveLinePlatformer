@@ -206,6 +206,7 @@ namespace DeveLinePlatformer.MonoGame.Core.PlatformerGame
                             }
                             else
                             {
+                                pos.PootjesX = curStickyLine.RightBall.Position.X;
                                 pos.Bottom = curStickyLine.RightBall.Position.Y;
                                 sticky = false;
                                 curStickyLine = null;
